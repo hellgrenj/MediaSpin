@@ -59,7 +59,7 @@
 
   </div>
   <h4>@currentKeyword i 
-  @if(currentSentiment == Sentiment.Positive)
+  @if(currentSentiment == Sentiment.Positivt)
   {
    <span style="color:#64c570">positiva</span> 
   } else {
@@ -82,7 +82,7 @@ else if(viewMode == ViewMode.RawData)
 {
   <span class="float-right"><span class="viewModeLinkButton" onclick=@(() => changeViewMode(ViewMode.Chart))>diagram</span> | <span class="viewModeLinkButton" onclick=@(() => changeViewMode(ViewMode.RawData))>text</span></span>
   <div class="textData">
-    @if(currentSentiment == Sentiment.Positive)
+    @if(currentSentiment == Sentiment.Positivt)
     {
       @foreach(var sentence in positiveSentences)
       {
@@ -90,7 +90,7 @@ else if(viewMode == ViewMode.RawData)
           <strong>Datum:</strong> @sentence.Received.ToShortDateString() <br/>
           <strong>Källa:</strong> @sentence.Source.Url <br/>
           <strong>Artikel:</strong> @sentence.SourceArticleHeader<br/>
-          <strong>Länk: </strong><a href="@sentence.SourceArticleUrl">@sentence.SourceArticleUrl</a><br/>
+          <strong>Länk: </strong><a class="blue-link" href="@sentence.SourceArticleUrl">@sentence.SourceArticleUrl</a><br/>
           <strong>Mening:</strong> @sentence.Text <br/>
         </p>
       }
@@ -101,7 +101,7 @@ else if(viewMode == ViewMode.RawData)
           <strong>Datum:</strong> @sentence.Received.ToShortDateString() <br/>
           <strong>Källa:</strong> @sentence.Source.Url <br/>
           <strong>Artikel:</strong> @sentence.SourceArticleHeader<br/>
-          <strong>Länk: </strong><a href="@sentence.SourceArticleUrl">@sentence.SourceArticleUrl</a><br/>
+          <strong>Länk: </strong><a class="blue-link" href="@sentence.SourceArticleUrl">@sentence.SourceArticleUrl</a><br/>
           <strong>Mening:</strong> @sentence.Text <br/>
         </p>
       }
@@ -124,8 +124,8 @@ else if(viewMode == ViewMode.RawData)
     bool emptyResult = false;
     string currentYearMonth;
     string currentKeyword;
-    enum Sentiment {Negative,Positive};
-    Sentiment currentSentiment = Sentiment.Negative;
+    enum Sentiment {Negativt,Positivt};
+    Sentiment currentSentiment = Sentiment.Negativt;
     List<string> keywords;
     List<string> yearMonths;
     List<Sentence> sentences;
@@ -223,7 +223,7 @@ else if(viewMode == ViewMode.RawData)
         var negativeSentimentResult = new { labels = negativeLookup.Keys.ToArray(),
            datapoints = negativeLookup.Values.ToArray()
          };
-      if(currentSentiment == Sentiment.Positive) {
+      if(currentSentiment == Sentiment.Positivt) {
             if(positiveSentimentResult.labels.Length > 0 && positiveSentimentResult.datapoints.Length > 0) 
             {
               emptyResult = false;
