@@ -1,6 +1,6 @@
 # MediaSpin
 
-## Live on
+## Up and running at
 [mediaspin.johanhellgren.se](https://mediaspin.johanhellgren.se)  
 
 ![screenshot](./screenshot.png)
