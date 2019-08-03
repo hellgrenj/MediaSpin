@@ -62,6 +62,7 @@ The idea is to track how Swedish media reports on different subjects by using se
 * RabbitMQ
 * Client side Blazor (WebAssembly) - hence the initial load time :)
 * The mediator pattern (without a library)
+* CQRS
 * Some hexagonal architecture principles in a microservices setting
 
 ## Challanges 
