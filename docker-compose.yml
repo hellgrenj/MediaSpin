@@ -1,0 +1,60 @@
+version: '3'
+services:
+  tracker:
+    build: ./tracker
+    depends_on:
+    - analyzer
+    - rabbit
+    env_file:
+      - ./environment/tracker.env
+      - ./environment/rabbit.env
+    volumes:
+    - logs:/logs
+    - ./data:/files
+  analyzer:
+    build: ./analyzer
+    env_file:
+      - ./environment/analyzer.env
+    volumes:
+    - logs:/logs
+  rabbit:
+    image: rabbitmq:3-management
+    env_file:
+      - ./environment/rabbit.env
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - rabbitvol:/var/lib/rabbitmq
+  storage:
+    build: ./storage
+    depends_on:
+    - postgres
+    ports:
+    - "7878:7878"
+    volumes:
+    - logs:/logs
+    - ./data:/files
+    env_file:
+      - ./environment/storage.env
+  visualizer:
+    build: ./visualizer
+    depends_on:
+    - storage
+    ports:
+    - "80:80"
+    volumes:
+    - logs:/logs
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+    - postgresvol:/var/lib/postgresql/data
+    env_file:
+      - ./environment/postgres.env
+volumes:
+  logs:
+  files:
+  rabbitvol:
+  postgresvol:

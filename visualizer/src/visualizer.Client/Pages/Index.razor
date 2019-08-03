@@ -1,0 +1,249 @@
+﻿@page "/"
+@using Microsoft.JSInterop;
+@using visualizer.Shared;
+@inject IJSRuntime JsRuntime;
+@inject HttpClient Http;
+
+@if(initDone)
+{
+  <div id="choices" style="margin-top:30px; margin-bottom:30px;">
+    <div>
+      <span style="font-size:0.8em;color:#909090;">välj ett nyckelord</span> <br/>
+        @if (keywords != null)
+          {     
+            @foreach (var keyword in keywords)
+            {
+              @if(keyword == currentKeyword){
+                <span class="selectedKeywordOption">@keyword</span>
+              } else {
+                <span class="keywordOption" onclick=@(() => HandleKeywordChange(@keyword))>@keyword</span>
+              }
+                
+            }
+          }
+    </div>
+
+ <div style="">
+      <span style="font-size:0.8em;color:#909090;">välj positivt eller negativt</span> <br/>
+        @foreach (string sentimentName in Enum.GetNames(typeof(Sentiment)))
+        {
+          if((Sentiment)Enum.Parse(typeof(Sentiment), sentimentName) == currentSentiment)
+          {
+            <span class="selectedSentimentOption">@sentimentName</span> 
+          } else 
+          {
+            <span class="sentimentOption" onclick=@(() => HandleSentimentChange(@sentimentName))>@sentimentName</span> 
+          }
+          
+        }
+    </div>
+
+
+    <div style="">
+      <span style="font-size:0.8em;color:#909090;">välj en månad </span> <br/>
+        @if (yearMonths != null)
+        {     
+          @foreach (var yearMonth in yearMonths)
+          {
+             @if(yearMonth == currentYearMonth)
+             {
+               <span class="selectedYearMonthOption">@yearMonth</span>
+             } else {
+               <span class="yearMonthOption" onclick=@(() => HandleYearMonthChange(@yearMonth))>@yearMonth</span>
+             }
+          }
+        }
+    </div>
+
+   
+
+  </div>
+  <h4>@currentKeyword i 
+  @if(currentSentiment == Sentiment.Positivt)
+  {
+   <span style="color:#64c570">positiva</span> 
+  } else {
+    <span style="color:#c56464">negativa</span>
+  } 
+  meningar @currentYearMonth</h4>
+}
+@if(viewMode == ViewMode.Chart)
+{
+  @if(!initDone)
+  {
+     <div class="d-flex justify-content-center">
+                <div class="spinner-border text-success" style="width: 5rem; height: 5rem;" role="status">
+                </div>
+            </div>
+  }
+  <canvas id="bar-chart-horizontal"></canvas>
+}
+else if(viewMode == ViewMode.RawData)
+{
+  <span class="float-right"><span class="viewModeLinkButton" onclick=@(() => changeViewMode(ViewMode.Chart))>diagram</span> | <span class="viewModeLinkButton" onclick=@(() => changeViewMode(ViewMode.RawData))>text</span></span>
+  <div class="textData">
+    @if(currentSentiment == Sentiment.Positivt)
+    {
+      @foreach(var sentence in positiveSentences)
+      {
+         <p>
+          <strong>Datum:</strong> @sentence.Received.ToShortDateString() <br/>
+          <strong>Källa:</strong> @sentence.Source.Url <br/>
+          <strong>Artikel:</strong> @sentence.SourceArticleHeader<br/>
+          <strong>Länk: </strong><a href="@sentence.SourceArticleUrl">@sentence.SourceArticleUrl</a><br/>
+          <strong>Mening:</strong> @sentence.Text <br/>
+        </p>
+      }
+    } else {
+      @foreach(var sentence in negativeSentences)
+      {
+        <p>
+          <strong>Datum:</strong> @sentence.Received.ToShortDateString() <br/>
+          <strong>Källa:</strong> @sentence.Source.Url <br/>
+          <strong>Artikel:</strong> @sentence.SourceArticleHeader<br/>
+          <strong>Länk: </strong><a href="@sentence.SourceArticleUrl">@sentence.SourceArticleUrl</a><br/>
+          <strong>Mening:</strong> @sentence.Text <br/>
+        </p>
+      }
+    }
+    </div>
+}
+@if(initDone)
+{
+  if(!emptyResult)
+  {
+    <span class="float-right"><span class="viewModeLinkButton" onclick=@(() => changeViewMode(ViewMode.Chart))>diagram</span> | <span class="viewModeLinkButton" onclick=@(() => changeViewMode(ViewMode.RawData))>text</span></span>
+  }
+}
+
+@functions
+{
+    // TODO clean up this code!
+
+    bool initDone = false;
+    bool emptyResult = false;
+    string currentYearMonth;
+    string currentKeyword;
+    enum Sentiment {Negativt,Positivt};
+    Sentiment currentSentiment = Sentiment.Negativt;
+    List<string> keywords;
+    List<string> yearMonths;
+    List<Sentence> sentences;
+    enum ViewMode {Chart, RawData};
+    ViewMode viewMode = ViewMode.Chart;
+    List<Sentence> negativeSentences = new List<Sentence>();
+    List<Sentence> positiveSentences = new List<Sentence>();
+    
+    protected override async Task OnInitAsync()
+    {
+      keywords = await Http.GetJsonAsync<List<string>>("api/Index/AllKeywords");
+      currentKeyword = keywords[0];
+      yearMonths = await Http.GetJsonAsync<List<string>>("api/Index/AllYearMonths");
+      currentYearMonth = yearMonths[0];
+      initDone = true;
+      await GetSentences();
+      
+    }
+    async Task changeViewMode(ViewMode mode)
+    {
+      viewMode = mode;
+      if(mode == ViewMode.Chart)
+      {
+        await GetSentences();
+      }
+    }
+    // (because bind and onchange does not work together, and we need onchange)
+    async Task HandleYearMonthChange(string value)
+    {
+        currentYearMonth = value;
+        await GetSentences();
+    }
+    async Task HandleKeywordChange(string value)
+    {
+        currentKeyword = value;
+        await GetSentences();
+    }
+    async Task HandleSentimentChange(string value)
+    {
+        currentSentiment = (Sentiment)Enum.Parse(typeof(Sentiment), value);
+        await GetSentences();
+    }
+    void addToLookup(Dictionary<string, int> lookup, Sentence s)
+    {
+      if(lookup.ContainsKey(s.Source.Url))
+      {
+         int count = lookup[s.Source.Url];
+         count++;
+         lookup[s.Source.Url] = count;
+      }
+      else
+      {
+          lookup.Add(s.Source.Url, 1);
+      }
+    }
+    async Task GetSentences()
+    {
+      // set view mode to chart and clear old data
+      viewMode = ViewMode.Chart;
+      negativeSentences.Clear();
+      positiveSentences.Clear();
+      
+      // get the new data
+      var body = new SentencesReq() {
+         Keyword = currentKeyword,
+         Date = DateTime.Parse(currentYearMonth + "-01")
+       };
+       sentences = await Http.SendJsonAsync<List<Sentence>>( HttpMethod.Post, "api/Index/Sentences", body);  
+
+       // prep data for bar chart  
+       var negativeLookup = new Dictionary<string, int>();
+       var positiveLookup = new Dictionary<string, int>();
+        foreach(var s in sentences) {
+          if(s.Positive == false)
+          {
+            addToLookup(negativeLookup, s);
+            negativeSentences.Add(s);
+          }
+          else
+          {
+            addToLookup(positiveLookup, s);
+            positiveSentences.Add(s);
+          }
+        }
+
+        await HandleResult(positiveLookup, negativeLookup);
+      
+
+    }
+    async Task HandleResult(Dictionary<string, int> positiveLookup, Dictionary<string, int> negativeLookup)
+    {
+        var positiveSentimentResult = new { labels = positiveLookup.Keys.ToArray(),
+           datapoints = positiveLookup.Values.ToArray()
+         };
+        var negativeSentimentResult = new { labels = negativeLookup.Keys.ToArray(),
+           datapoints = negativeLookup.Values.ToArray()
+         };
+      if(currentSentiment == Sentiment.Positivt) {
+            if(positiveSentimentResult.labels.Length > 0 && positiveSentimentResult.datapoints.Length > 0) 
+            {
+              emptyResult = false;
+            } else {
+              emptyResult = true;
+            }
+            // because renderBarChart js method resets canvas
+            Console.WriteLine("rendering positive chart");
+            await JsRuntime.InvokeAsync<object>("renderBarChart", positiveSentimentResult);
+        } else {
+            if(negativeSentimentResult.labels.Length > 0 && negativeSentimentResult.datapoints.Length > 0)
+            {
+              emptyResult = false;
+            } else {
+              emptyResult = true;
+            }
+            // because renderBarChart js method resets canvas
+            Console.WriteLine("rendering negative chart");
+            await JsRuntime.InvokeAsync<object>("renderBarChart", negativeSentimentResult);
+            
+        }
+    }
+}

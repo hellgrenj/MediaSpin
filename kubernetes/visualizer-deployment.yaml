@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.14.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: visualizer
+  name: visualizer
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: visualizer
+    spec:
+      containers:
+      - image: hellgrenj/mediaspin:visualizerv24
+        name: visualizer
+        ports:
+        - containerPort: 80
+        resources: {}
+        volumeMounts:
+        - mountPath: /logs
+          name: logs
+      imagePullSecrets:
+        - name: regcred
+      restartPolicy: Always
+      volumes:
+      - name: logs
+        persistentVolumeClaim:
+          claimName: visualizerlogs
+status: {}

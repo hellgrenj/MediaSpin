@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.14.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: analyzer
+  name: analyzer
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: analyzer
+    spec:
+      containers:
+      - env:
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            secretKeyRef:
+              key: rabbitpassword
+              name: rabbitpassword
+        - name: RABBITMQ_DEFAULT_USER
+          valueFrom:
+            secretKeyRef:
+              key: rabbituser
+              name: rabbituser
+        image: hellgrenj/mediaspin:analyzerv10
+        name: analyzer
+        resources: {}
+        volumeMounts:
+        - mountPath: /logs
+          name: logs
+      imagePullSecrets:
+        - name: regcred
+      restartPolicy: Always
+      volumes:
+      - name: logs
+        persistentVolumeClaim:
+          claimName: analyzerlogs
+status: {}
