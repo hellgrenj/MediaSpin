@@ -33,7 +33,7 @@ First run the system and let tracker execute a full article fetch. Make sure tha
  (more about the dataset under Challanges below)
 
 ## What and why
-The idea is to track how media reports on different subjects (in swedish) by using sentiment analysis. The reason for doing this, besides that I find the idea interesting, is that I had an itch to build something after a couple of months on parental leave. So if you find this solution just a tad over engineered its because I wanted to learn and evaluate some new things as well as revisit some old ideas - and where should you do that if not in a hobby project? =)
+The idea is to track how media reports on different subjects (in Swedish) by using sentiment analysis. The reason for doing this, besides that I find the idea interesting, is that I had an itch to build something after a couple of months on parental leave. So if you find this solution just a tad over engineered its because I wanted to learn and evaluate some new things as well as revisit some old ideas - and where should you do that if not in a hobby project? =)
 
 ## How does it work?
 
@@ -67,7 +67,7 @@ The idea is to track how media reports on different subjects (in swedish) by usi
 ## Challanges 
 I have not been able to find a good Swedish dataset to train my ML.NET model with. So, for now, I am doing the following: 
 
-I am using the swedish translated AFINN lexicon and word lists I found on Kaggle to generate a dataset from actual articles pulled down by the tracker component.
+I am using the Swedish translated AFINN lexicon and word lists I found on Kaggle to generate a dataset from actual articles pulled down by the tracker component.
 
 See /dataset-gen/index.js and scripts/add-to-dataset-and-re-train-model.js and the code in tracker that writes articles to a file to see how this works. 
 
