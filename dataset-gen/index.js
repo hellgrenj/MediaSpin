@@ -47,7 +47,7 @@ articles.forEach(article => {
     if (!invalidSentence(sentence)) {
       replaceTrackingKeywords(sentence)
       const result = sentiment.analyze(sentence, { language: 'sv' })
-      if (result.score >= 10 || result.score <= -10) { // only very positive and very negative
+      if (result.score >= 7 || result.score <= -7) { // only very positive and very negative
         const numberOfPositiveWordsInSentence = numberOfWordsInList(
           positiveWords,
           sentence
