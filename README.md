@@ -68,7 +68,7 @@ The idea is to track how Swedish media reports on different subjects by using se
 ## Challanges 
 I have not been able to find a good Swedish dataset to train my ML.NET model with. So, for now, I am doing the following: 
 
-I am using the Swedish translated AFINN lexicon and word lists I found on Kaggle to generate a dataset from actual articles pulled down by the tracker component.
+I am using a Swedish translated AFINN lexicon and word lists I found on Kaggle to generate a dataset from actual articles pulled down by the tracker component.
 
 See /dataset-gen/index.js and scripts/add-to-dataset-and-re-train-model.js and the code in tracker that writes articles to a file to see how this works. 
 
