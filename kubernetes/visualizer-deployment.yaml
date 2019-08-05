@@ -19,7 +19,7 @@ spec:
         io.kompose.service: visualizer
     spec:
       containers:
-      - image: hellgrenj/mediaspin:visualizerv26
+      - image: hellgrenj/mediaspin:visualizerv25
         name: visualizer
         ports:
         - containerPort: 80
