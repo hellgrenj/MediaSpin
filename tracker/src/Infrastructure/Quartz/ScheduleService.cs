@@ -43,7 +43,7 @@ namespace tracker.Infrastructure.Quartz
                 .WithIdentity("EveryOtherHour", "default")
                 .StartNow()
                 .WithSimpleSchedule(x => x
-                    .WithIntervalInHours(3)
+                    .WithIntervalInHours(24)
                     .RepeatForever())
                 .Build();
 
