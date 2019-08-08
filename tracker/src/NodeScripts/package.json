@@ -1,0 +1,14 @@
+{
+  "name": "nodescripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "html-to-text.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "html-to-text": "^5.1.1"
+  }
+}
