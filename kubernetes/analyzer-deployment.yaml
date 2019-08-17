@@ -30,7 +30,7 @@ spec:
             secretKeyRef:
               key: rabbituser
               name: rabbituser
-        image: hellgrenj/mediaspin:analyzerv11
+        image: hellgrenj/mediaspin:analyzerv12
         name: analyzer
         resources: {}
         volumeMounts:

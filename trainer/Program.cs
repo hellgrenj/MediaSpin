@@ -60,8 +60,8 @@ namespace trainer
             Console.WriteLine("The model is saved to {0}", ModelPath);
 
             // TRY IT: Make a single test prediction loding the model from .ZIP file
-            SentimentIssue sampleStatement = new SentimentIssue { Text = "Nu är Moderaterna näst största parti igen och Kristersson har väljarnas förtroende!" };
-            SentimentIssue sampleStatement2 = new SentimentIssue { Text = "Socialdemokraterna sämsta parti i senaste opinionsmätningen" };
+            SentimentIssue sampleStatement = new SentimentIssue { Text = "Centerpartiet lockar fler väljare och förväntas bli större än Kalle Anka partiet till hösten" };
+            SentimentIssue sampleStatement2 = new SentimentIssue { Text = "Det går dåligt för Moderaterna, man rasar i den senaste opinionsmätningen" };
 
             #region consume
             // Create prediction engine related to the loaded trained model
