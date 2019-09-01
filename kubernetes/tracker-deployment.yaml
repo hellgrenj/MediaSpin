@@ -40,7 +40,7 @@ spec:
             configMapKeyRef:
               key: SOURCES
               name: tracker-environment-tracker-env
-        image: hellgrenj/mediaspin:trackerv13
+        image: hellgrenj/mediaspin:trackerv14
         name: tracker
         resources: {}
         volumeMounts:

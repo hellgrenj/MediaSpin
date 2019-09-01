@@ -32,6 +32,18 @@ namespace tracker.Domain.Services
             if (containsMoreThanOneStar(sentence))
                 consideredBodyTextSentence = false;
 
+            bool containsMoreThanOneArrow(string s) { return s.Count(t => t == '►') > 1; };
+            if (containsMoreThanOneArrow(sentence))
+                consideredBodyTextSentence = false;
+
+            bool containsMoreThanThreeDashes(string s) { return s.Count(t => t == '-') > 3; };
+            if (containsMoreThanThreeDashes(sentence))
+                consideredBodyTextSentence = false;
+
+            bool containsMoreThanThreePluses(string s) { return s.Count(t => t == '+') > 3; };
+            if (containsMoreThanThreePluses(sentence))
+                consideredBodyTextSentence = false;
+
             if (IsAThirdOrMoreUpperCase(sentence))
                 consideredBodyTextSentence = false;
 

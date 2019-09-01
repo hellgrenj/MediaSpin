@@ -99,8 +99,10 @@ namespace storage.Persistence
             var DistinctYearMonths = await _storageDbContext.Sentences
             .Select(s => new { s.Received.Year, s.Received.Month })
             .Distinct()
+            .OrderByDescending(s => s.Year)
+            .OrderByDescending(s => s.Month)
             .ToListAsync();
-
+            
             List<DateTime> yearMonths = DistinctYearMonths.Select(x => new DateTime(x.Year, x.Month, 1)).ToList();
             return yearMonths;
         }

@@ -33,6 +33,33 @@ namespace unittests.Domain.Services
         }
 
         [Fact]
+        public void ConsideredBodyText_fails_if_more_than_one_arrow()
+        {
+            var loggerMock = new Mock<ILogger<Validator>>();
+            var validator = new Validator(loggerMock.Object);
+            var result = validator.ConsideredBodyText("This is a sentence with more than one star ► ► ►");
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void ConsideredBodyText_fails_if_more_than_three_dashes()
+        {
+            var loggerMock = new Mock<ILogger<Validator>>();
+            var validator = new Validator(loggerMock.Object);
+            var result = validator.ConsideredBodyText("This is a sentence with more than three -dashes ---");
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void ConsideredBodyText_fails_if_more_than_three_pluses()
+        {
+            var loggerMock = new Mock<ILogger<Validator>>();
+            var validator = new Validator(loggerMock.Object);
+            var result = validator.ConsideredBodyText("This is a sentence with more than three pluses ++++");
+            Assert.False(result);
+        }
+
+        [Fact]
         public void ConsideredBodyText_fails_if_more_than_a_third_uppercase()
         {
             var loggerMock = new Mock<ILogger<Validator>>();
