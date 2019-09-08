@@ -87,7 +87,7 @@ namespace unittests.Domain.Services
         public void Analyze_sends_sentence_for_storage_if_ml_model_and_afinn_agrees_on_negative()
         {
             var afinnMock = new Mock<IAFINN>();
-            afinnMock.Setup(afinn => afinn.Predict(It.IsAny<string>())).ReturnsAsync(new AFINNPrediction(){ Score = -1 });
+            afinnMock.Setup(afinn => afinn.Predict(It.IsAny<string>())).ReturnsAsync(new AFINNPrediction(){ Score = -2 });
             var mlModelMock = new Mock<IMLModel>();
             var neutralPrediction = new PredictionResult();
             neutralPrediction.Sentence = "doesnt matter for this test";
