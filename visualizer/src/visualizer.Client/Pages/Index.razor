@@ -16,7 +16,7 @@
               @if(keyword == currentKeyword){
                 <span class="selectedKeywordOption">@keyword</span>
               } else {
-                <span class="keywordOption" onclick=@(() => HandleKeywordChange(@keyword))>@keyword</span>
+                <span class="keywordOption" onclick=@(HandleKeywordChange(@keyword))>@keyword</span>
               }
                 
             }
@@ -32,7 +32,7 @@
             <span class="selectedSentimentOption">@sentimentName</span> 
           } else 
           {
-            <span class="sentimentOption" onclick=@(() => HandleSentimentChange(@sentimentName))>@sentimentName</span> 
+            <span class="sentimentOption" onclick=@(HandleSentimentChange(@sentimentName))>@sentimentName</span> 
           }
           
         }
@@ -49,7 +49,7 @@
              {
                <span class="selectedYearMonthOption">@yearMonth</span>
              } else {
-               <span class="yearMonthOption" onclick=@(() => HandleYearMonthChange(@yearMonth))>@yearMonth</span>
+               <span class="yearMonthOption" onclick=@(HandleYearMonthChange(@yearMonth))>@yearMonth</span>
              }
           }
         }
@@ -80,7 +80,7 @@
 }
 else if(viewMode == ViewMode.RawData)
 {
-  <span class="float-right"><span class="viewModeLinkButton" onclick=@(() => changeViewMode(ViewMode.Chart))>diagram</span> | <span class="viewModeLinkButton" onclick=@(() => changeViewMode(ViewMode.RawData))>text</span></span>
+  <span class="float-right"><span class="viewModeLinkButton" onclick=@(changeViewMode(ViewMode.Chart))>diagram</span> | <span class="viewModeLinkButton" onclick=@(changeViewMode(ViewMode.RawData))>text</span></span>
   <div class="textData">
     @if(currentSentiment == Sentiment.Positivt)
     {
@@ -112,7 +112,7 @@ else if(viewMode == ViewMode.RawData)
 {
   if(!emptyResult)
   {
-    <span class="float-right"><span class="viewModeLinkButton" onclick=@(() => changeViewMode(ViewMode.Chart))>diagram</span> | <span class="viewModeLinkButton" onclick=@(() => changeViewMode(ViewMode.RawData))>text</span></span>
+    <span class="float-right"><span class="viewModeLinkButton" onclick=@(changeViewMode(ViewMode.Chart))>diagram</span> | <span class="viewModeLinkButton" onclick=@(changeViewMode(ViewMode.RawData))>text</span></span>
   }
 }
 
@@ -134,7 +134,7 @@ else if(viewMode == ViewMode.RawData)
     List<Sentence> negativeSentences = new List<Sentence>();
     List<Sentence> positiveSentences = new List<Sentence>();
     
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
       keywords = await Http.GetJsonAsync<List<string>>("api/Index/AllKeywords");
       currentKeyword = keywords[0];

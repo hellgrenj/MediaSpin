@@ -37,7 +37,7 @@ För den som är intresserad så kan man läsa mer om hur denna lösning fungera
 @functions
 {
    
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
       string[] keywords = await Http.GetJsonAsync<string[]>("api/Index/AllKeywords");        
       await JsRuntime.InvokeAsync<object>("startRollingSubject", new {keywords});

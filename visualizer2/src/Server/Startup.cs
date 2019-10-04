@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
+using Newtonsoft.Json.Serialization;
 using System.Linq;
-using visualizer.Server.Services;
 
-namespace visualizer.Server
+namespace visualizer2.Server
 {
     public class Startup
     {
@@ -17,7 +15,6 @@ namespace visualizer.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().AddNewtonsoftJson();
-            services.AddTransient<IStorageClient, StorageClient>();
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -35,7 +32,10 @@ namespace visualizer.Server
                 app.UseDeveloperExceptionPage();
                 app.UseBlazorDebugging();
             }
+
+            app.UseStaticFiles();
             app.UseClientSideBlazorFiles<Client.Startup>();
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -43,7 +43,6 @@ namespace visualizer.Server
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapFallbackToClientSideBlazor<Client.Startup>("index.html");
             });
-
         }
     }
 }
