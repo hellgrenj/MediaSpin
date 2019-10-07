@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using visualizer2.Services;
 
 namespace visualizer2
 {
@@ -26,6 +27,7 @@ namespace visualizer2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddTransient<IStorageClient, StorageClient>();
              // connect vue app - middleware  
             services.AddSpaStaticFiles(options => options.RootPath = "client-app/dist");  
         }  

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package StorageEndpoint;
+import "google/protobuf/timestamp.proto";
+
+
+service Storage {
+  rpc GetSentences (GetSentencesRequest) returns (GetSentencesResponse) {}
+  rpc GetKeywords (GetKeywordsRequest) returns (GetKeywordsResponse) {}
+  rpc GetYearMonths (GetYearMonthsRequest) returns (GetYearMonthsResponse) {}
+}
+
+
+message GetSentencesRequest {
+  string keyword = 1;
+  google.protobuf.Timestamp yearMonth = 2;
+}
+
+message GetSentencesResponse {
+ 
+  message Sentence {
+    message Keyword {
+      string text = 1;
+    }
+    message Source {
+      string url = 1;
+    }
+    string text =  1;
+    bool positive = 2;
+    string sourcearticleurl = 3;
+    string sourcearticleheader = 4;
+    google.protobuf.Timestamp received = 5;
+    Keyword keyword = 6;
+    Source source = 7;
+  }
+  repeated Sentence sentences = 1;
+}
+
+message GetKeywordsRequest {}
+message GetKeywordsResponse {
+  repeated string keywords = 1;
+}
+
+message GetYearMonthsRequest {}
+message GetYearMonthsResponse {
+  repeated google.protobuf.Timestamp yearmonths = 1;
+}
