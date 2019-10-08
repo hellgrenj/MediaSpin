@@ -2,22 +2,41 @@
   <div class="main">
     <div id="choices">
       <div>
-      <span style="font-size:0.8em;color:#909090;">välj ett nyckelord</span>
-      <br />
-      <span v-for="keyword in keywords" :key="keyword">
-        <span v-if="keyword == currentKeyword" class="selectedKeywordOption">{{ keyword }}</span>
-        <span v-else class="keywordOption" v-on:click="selectKeyword">{{ keyword }}</span>
-      </span>
+        <span style="font-size:0.8em;color:#909090;">välj ett nyckelord</span>
+        <br />
+        <span v-for="keyword in keywords" :key="keyword">
+          <span v-if="keyword == currentKeyword" class="selectedKeywordOption">{{ keyword }}</span>
+          <span v-else class="keywordOption" v-on:click="selectKeyword">{{ keyword }}</span>
+        </span>
       </div>
       <div>
-      <span style="font-size:0.8em;color:#909090;">välj positivt eller negativt</span>
-      <br />
-      <span v-for="yearMonth in yearMonths" :key="yearMonth">
-        <span v-if="yearMonth == currentYearMonth" class="selectedYearMonthOption">{{ yearMonth }}</span>
-        <span v-else class="yearMonthOption" v-on:click="selectYearMonth">{{ yearMonth }}</span>
-      </span>
+        <span style="font-size:0.8em;color:#909090;">välj en månad</span>
+        <br />
+        
+          <span v-if="currentSentiment == 'Negativt'" class="selectedSentimentOption">Negativt</span>
+          <span v-else class="sentimentOption" v-on:click="setSentiment">Negativt</span>
+
+          <span v-if="currentSentiment == 'Positivt'" class="selectedSentimentOption">Positivt</span>
+          <span v-else class="sentimentOption" v-on:click="setSentiment">Positivt</span>
+        
+      </div>
+      <div>
+        <span style="font-size:0.8em;color:#909090;">välj positivt eller negativt</span>
+        <br />
+        <span v-for="yearMonth in yearMonths" :key="yearMonth">
+          <span v-if="yearMonth == currentYearMonth" class="selectedYearMonthOption">{{ yearMonth }}</span>
+          <span v-else class="yearMonthOption" v-on:click="selectYearMonth">{{ yearMonth }}</span>
+        </span>
       </div>
     </div>
+    <h4 v-if="currentSentiment == 'Positivt'"> {{currentKeyword}}
+      <span style="color:#64c570">positiva</span>
+      meningar {{currentYearMonth}}
+    </h4>
+    <h4 v-else> {{currentKeyword}}
+      <span style="color:#c56464">negativa</span>
+      meningar {{currentYearMonth}}
+    </h4>
   </div>
 </template>
 
@@ -29,7 +48,8 @@ export default {
       keywords: [],
       yearMonths: [],
       currentKeyword: "",
-      currentYearMonth: ""
+      currentYearMonth: "",
+      currentSentiment: "Negativt"
     };
   },
   methods: {
@@ -38,6 +58,9 @@ export default {
     },
     selectYearMonth: function(event) {
       this.currentYearMonth = event.target.innerHTML;
+    },
+    setSentiment: function(event) {
+      this.currentSentiment = event.target.innerHTML;
     }
   },
   mounted() {
