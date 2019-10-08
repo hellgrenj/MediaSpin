@@ -39,6 +39,7 @@
   cursor: pointer;
   width:150px;
   margin-top:4px;
+  margin: 2px;
 }
 .selectedYearMonthOption{
   font-size: 0.8em;
