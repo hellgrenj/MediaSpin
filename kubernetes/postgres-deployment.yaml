@@ -40,7 +40,7 @@ spec:
             configMapKeyRef:
               key: PGDATA
               name: postgres-environment-postgres-env
-        image: postgres
+        image: postgres:11
         name: postgres
         ports:
         - containerPort: 5432

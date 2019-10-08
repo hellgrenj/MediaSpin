@@ -1,19 +1,20 @@
 <template>
   <div class="main">
-    
-    <div>
-      <ul class="keywords" v-for="keyword in keywords" :key="keyword">
-        <li class="keyword">{{ keyword }}</li>
-      </ul>
+    <div id="choices">
+      <span style="font-size:0.8em;color:#909090;">välj ett nyckelord</span>
+      <br />
+      <span v-for="keyword in keywords" :key="keyword">
+        
+        <span v-if="keyword == currentKeyword" class="selectedKeywordOption">{{ keyword }}</span>
+        <span v-else class="keywordOption">{{ keyword }}</span>
+      </span>
     </div>
-  
     <div>
       <ul class="yearMonths" v-for="yearMonth in yearMonths" :key="yearMonth">
         <li class="yearMonth">{{ yearMonth }}</li>
       </ul>
     </div>
   </div>
-
 </template>
 
 <script lang="ts">
@@ -22,7 +23,8 @@ export default {
   data() {
     return {
       keywords: [],
-      yearMonths: []
+      yearMonths: [],
+      currentKeyword: 'Moderaterna'
     };
   },
   mounted() {
