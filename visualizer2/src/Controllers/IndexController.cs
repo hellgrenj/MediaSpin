@@ -46,13 +46,16 @@ namespace visualizer2.Controllers
         [HttpPost("[action]")]
         public async Task<List<Sentence>> Sentences([FromBody]SentencesReq query)
         {
-
+            Console.WriteLine("Received");
+            Console.WriteLine(query.Date);
+            Console.WriteLine(query.Keyword);
             // FluentValidation for asp.net core 3 out yet?
             if (query.Date == null || query.Keyword == null || query.Keyword == string.Empty)
             {
                 return new List<Sentence>();
             }
-            var sentences = await _storageClient.GetSentencesAsync(query.Keyword, query.Date);
+            
+            var sentences = await _storageClient.GetSentencesAsync(query.Keyword, Convert.ToDateTime(query.Date));
             return sentences;
         }
     }

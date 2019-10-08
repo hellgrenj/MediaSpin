@@ -6,6 +6,6 @@ namespace visualizer2.Model
     public class SentencesReq
     {
        public string Keyword;
-       public DateTime Date;
+       public string Date;
     }
 }

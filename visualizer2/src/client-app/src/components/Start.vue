@@ -12,13 +12,12 @@
       <div>
         <span style="font-size:0.8em;color:#909090;">välj en månad</span>
         <br />
-        
-          <span v-if="currentSentiment == 'Negativt'" class="selectedSentimentOption">Negativt</span>
-          <span v-else class="sentimentOption" v-on:click="setSentiment">Negativt</span>
 
-          <span v-if="currentSentiment == 'Positivt'" class="selectedSentimentOption">Positivt</span>
-          <span v-else class="sentimentOption" v-on:click="setSentiment">Positivt</span>
-        
+        <span v-if="currentSentiment == 'Negativt'" class="selectedSentimentOption">Negativt</span>
+        <span v-else class="sentimentOption" v-on:click="setSentiment">Negativt</span>
+
+        <span v-if="currentSentiment == 'Positivt'" class="selectedSentimentOption">Positivt</span>
+        <span v-else class="sentimentOption" v-on:click="setSentiment">Positivt</span>
       </div>
       <div>
         <span style="font-size:0.8em;color:#909090;">välj positivt eller negativt</span>
@@ -29,18 +28,24 @@
         </span>
       </div>
     </div>
-    <h4 v-if="currentSentiment == 'Positivt'"> {{currentKeyword}}
+    <h4 v-if="currentSentiment == 'Positivt'">
+      {{currentKeyword}}
       <span style="color:#64c570">positiva</span>
       meningar {{currentYearMonth}}
     </h4>
-    <h4 v-else> {{currentKeyword}}
+    <h4 v-else>
+      {{currentKeyword}}
       <span style="color:#c56464">negativa</span>
       meningar {{currentYearMonth}}
     </h4>
+    <div>
+      <canvas id="bar-chart-horizontal"></canvas>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
+// TODO js => ts
 import axios from "axios";
 export default {
   data() {
@@ -55,12 +60,31 @@ export default {
   methods: {
     selectKeyword: function(event) {
       this.currentKeyword = event.target.innerHTML;
+      this.getSentences();
     },
     selectYearMonth: function(event) {
       this.currentYearMonth = event.target.innerHTML;
+      this.getSentences();
     },
     setSentiment: function(event) {
       this.currentSentiment = event.target.innerHTML;
+      this.getSentences();
+    },
+    getSentences: async function(event) {
+      await axios
+        .post(
+          "/api/index/sentences",
+          {
+            keyword: this.currentKeyword,
+            date: this.currentYearMonth + "-01"
+          }
+        )
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   },
   mounted() {
