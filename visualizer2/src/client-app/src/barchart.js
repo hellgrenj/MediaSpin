@@ -1,5 +1,5 @@
 var myChart
-function renderBarChart (params) {
+export function renderBarChart (params) {
   if (myChart != null) {
     // reset previous render
     console.log('clearing previous render')

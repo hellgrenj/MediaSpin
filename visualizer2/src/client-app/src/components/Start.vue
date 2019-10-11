@@ -10,7 +10,7 @@
         </span>
       </div>
       <div>
-        <span style="font-size:0.8em;color:#909090;">välj en månad</span>
+        <span style="font-size:0.8em;color:#909090;">välj positivt eller negativt</span>
         <br />
 
         <span v-if="currentSentiment == 'Negativt'" class="selectedSentimentOption">Negativt</span>
@@ -20,7 +20,7 @@
         <span v-else class="sentimentOption" v-on:click="setSentiment">Positivt</span>
       </div>
       <div>
-        <span style="font-size:0.8em;color:#909090;">välj positivt eller negativt</span>
+        <span style="font-size:0.8em;color:#909090;">välj en månad</span>
         <br />
         <span v-for="yearMonth in yearMonths" :key="yearMonth">
           <span v-if="yearMonth == currentYearMonth" class="selectedYearMonthOption">{{ yearMonth }}</span>
@@ -45,8 +45,9 @@
 </template>
 
 <script lang="ts">
-// TODO js => ts
+// TODO js => ts + massa refactoring
 import axios from "axios";
+import { renderBarChart } from "../barchart";
 export default {
   data() {
     return {
@@ -70,47 +71,88 @@ export default {
       this.currentSentiment = event.target.innerHTML;
       this.getSentences();
     },
-    getSentences: async function(event) {
+    getSentences: async function() {
       await axios
-        .post(
-          "/api/index/sentences",
-          {
-            keyword: this.currentKeyword,
-            date: this.currentYearMonth + "-01"
-          }
-        )
-        .then(function(response) {
+        .post("/api/index/sentences", {
+          keyword: this.currentKeyword,
+          date: this.currentYearMonth + "-01"
+        })
+        .then(async response => {
           console.log(response);
+          await this.visualize(response.data);
         })
         .catch(function(error) {
           console.log(error);
         });
+    },
+    addToMap: async function(map, s) {
+      if (map.has(s.source.url)) {
+        let count = map.get(s.source.url);
+        count++;
+        map.set(s.source.url, count);
+      } else {
+        map.set(s.source.url, 1);
+      }
+    },
+    getAllKeywords: async function() {
+      await axios
+        .get("/api/index/allkeywords")
+        .then(res => {
+          let keywords = res.data;
+          this.keywords = keywords;
+          this.currentKeyword = keywords[0];
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getAllYearMonths: async function() {
+      await axios
+        .get("/api/index/allyearmonths")
+        .then(res => {
+          let yearMonths = res.data;
+          this.yearMonths = yearMonths;
+          this.currentYearMonth = yearMonths[0];
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    visualize: async function(sentences) {
+      let positiveMap = new Map();
+      let positiveSentences = [];
+      let negativeMap = new Map();
+      let negativeSentences = [];
+
+      sentences.forEach(s => {
+        if (s.positive === true) {
+          this.addToMap(positiveMap, s);
+          positiveSentences.push(s);
+        } else {
+          this.addToMap(negativeMap, s);
+          negativeSentences.push(s);
+        }
+      });
+
+      if (this.currentSentiment === "Positivt") {
+        const positiveSet = {
+          labels: [...positiveMap.keys()],
+          datapoints: [...positiveMap.values()]
+        };
+        renderBarChart(positiveSet);
+      } else {
+        const negativeSet = {
+          labels: [...negativeMap.keys()],
+          datapoints: [...negativeMap.values()]
+        };
+        renderBarChart(negativeSet);
+      }
     }
   },
-  mounted() {
-    console.log("test");
-    axios
-      .get("/api/index/allkeywords")
-      .then(res => {
-        let keywords = res.data;
-        console.log(keywords);
-        this.keywords = keywords;
-        this.currentKeyword = keywords[0];
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    axios
-      .get("/api/index/allyearmonths")
-      .then(res => {
-        let yearMonths = res.data;
-        console.log(yearMonths);
-        this.yearMonths = yearMonths;
-        this.currentYearMonth = yearMonths[0];
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  async mounted() {
+    await this.getAllKeywords();
+    await this.getAllYearMonths();
+    await this.getSentences();
   }
 };
 </script>
