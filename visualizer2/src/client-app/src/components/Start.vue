@@ -38,16 +38,16 @@
       <span style="color:#c56464">negativa</span>
       meningar {{currentYearMonth}}
     </h4>
-    <!-- På bägge ställen här in med text | chart knappen -->
     <div v-if="viewMode == 'Chart'">
       <canvas id="bar-chart-horizontal"></canvas>
-      <span class="float-right">
+      <span class="float-right" v-if="emptyResult === false">
+        <!-- duplication ...... fix.. component..-->
         <span class="viewModeLinkButton" v-on:click="changeViewMode('Chart')">diagram</span> |
         <span class="viewModeLinkButton" v-on:click="changeViewMode('Text')">text</span>
       </span>
     </div>
     <div v-else>
-      <span class="float-right">
+      <span class="float-right" v-if="emptyResult === false">
         <span class="viewModeLinkButton" v-on:click="changeViewMode('Chart')">diagram</span> |
         <span class="viewModeLinkButton" v-on:click="changeViewMode('Text')">text</span>
       </span>
@@ -55,7 +55,7 @@
         <div v-if="currentSentiment == 'Positivt'">
           <p v-for="(sentence, index) in positiveSentences" :key="index">
             <strong>Datum:</strong>
-            {{sentence.received | moment('yyyy-mm-dd')}}
+            {{sentence.received | moment('YYYY-MM-DD')}}
             <br />
             <strong>Källa:</strong>
             {{sentence.source.url}}
@@ -63,8 +63,8 @@
             <strong>Artikel:</strong>
             {{sentence.sourceArticleHeader}}
             <br />
-            <strong>Länk: </strong>
-            <a class="blue-link" :href="sentence.sourceArticleUrl">{{sentence.sourceArticleUrl}}</a>
+            <strong>Länk:</strong>
+            <a class="source-article-link" :href="sentence.sourceArticleUrl">{{sentence.sourceArticleUrl}}</a>
             <br />
             <strong>Mening:</strong>
             {{sentence.text}}
@@ -76,15 +76,14 @@
             <strong>Datum:</strong>
             {{sentence.received | moment('YYYY-MM-DD')}}
             <br />
-            <br />
             <strong>Källa:</strong>
             {{sentence.source.url}}
             <br />
             <strong>Artikel:</strong>
             {{sentence.sourceArticleHeader}}
             <br />
-            <strong>Länk: </strong>
-            <a class="blue-link" :href="sentence.sourceArticleUrl">{{sentence.sourceArticleUrl}}</a>
+            <strong>Länk:</strong>
+            <a class="source-article-link" :href="sentence.sourceArticleUrl">{{sentence.sourceArticleUrl}}</a>
             <br />
             <strong>Mening:</strong>
             {{sentence.text}}
@@ -92,7 +91,7 @@
           </p>
         </div>
       </div>
-      <span class="float-right">
+      <span class="float-right" v-if="emptyResult === false">
         <span class="viewModeLinkButton" v-on:click="changeViewMode('Chart')">diagram</span> |
         <span class="viewModeLinkButton" v-on:click="changeViewMode('Text')">text</span>
       </span>
@@ -114,7 +113,8 @@ export default {
       currentSentiment: "Negativt",
       viewMode: "Chart",
       positiveSentences: [],
-      negativeSentences: []
+      negativeSentences: [],
+      emptyResult: false
     };
   },
   methods: {
@@ -196,21 +196,38 @@ export default {
           this.negativeSentences.push(s);
         }
       });
-      if (this.viewMode === "Chart") {
+      
+        // when porting to ts also clean up all ugly duplication
         if (this.currentSentiment === "Positivt") {
           const positiveSet = {
             labels: [...positiveMap.keys()],
             datapoints: [...positiveMap.values()]
           };
+          if (
+            positiveSet.labels.length === 0 &&
+            positiveSet.datapoints.length === 0
+          ) {
+            this.emptyResult = true;
+          } else {
+            this.emptyResult = false;
+          }
           renderBarChart(positiveSet);
         } else {
           const negativeSet = {
             labels: [...negativeMap.keys()],
             datapoints: [...negativeMap.values()]
           };
+          if (
+            negativeSet.labels.length === 0 &&
+            negativeSet.datapoints.length === 0
+          ) {
+            this.emptyResult = true;
+          } else {
+            this.emptyResult = false;
+          }
           renderBarChart(negativeSet);
         }
-      }
+      
     }
   },
   async mounted() {
@@ -223,4 +240,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.source-article-link {margin-left:2px; color:#3e95cd;}
 </style>

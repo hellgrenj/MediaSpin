@@ -70,4 +70,5 @@ export default {
   color:#ccc;
   padding-bottom:10px;
   }
+  .text-info {color:#3e95cd!important;}
 </style>
