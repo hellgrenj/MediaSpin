@@ -1,5 +1,5 @@
 var timer = null
-function startRollingSubject (params) {
+export function startRollingSubject (params) {
   if (timer) {
     clearInterval(timer)
   }

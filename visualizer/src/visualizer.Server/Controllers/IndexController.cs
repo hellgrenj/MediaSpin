@@ -46,9 +46,7 @@ namespace visualizer.Server.Controllers
         [HttpPost("[action]")]
         public async Task<List<Sentence>> Sentences([FromBody]SentencesReq query)
         {
-
-            // FluentValidation for asp.net core 3 out yet?
-            if (query.Date == null || query.Keyword == null || query.Keyword == string.Empty)
+            if (string.IsNullOrEmpty(query.Keyword) || query.Date == null)
             {
                 return new List<Sentence>();
             }

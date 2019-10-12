@@ -38,8 +38,64 @@
       <span style="color:#c56464">negativa</span>
       meningar {{currentYearMonth}}
     </h4>
-    <div>
+    <!-- På bägge ställen här in med text | chart knappen -->
+    <div v-if="viewMode == 'Chart'">
       <canvas id="bar-chart-horizontal"></canvas>
+      <span class="float-right">
+        <span class="viewModeLinkButton" v-on:click="changeViewMode('Chart')">diagram</span> |
+        <span class="viewModeLinkButton" v-on:click="changeViewMode('Text')">text</span>
+      </span>
+    </div>
+    <div v-else>
+      <span class="float-right">
+        <span class="viewModeLinkButton" v-on:click="changeViewMode('Chart')">diagram</span> |
+        <span class="viewModeLinkButton" v-on:click="changeViewMode('Text')">text</span>
+      </span>
+      <div class="textData">
+        <div v-if="currentSentiment == 'Positivt'">
+          <p v-for="(sentence, index) in positiveSentences" :key="index">
+            <strong>Datum:</strong>
+            {{sentence.received}}
+            <br />
+            <strong>Källa:</strong>
+            {{sentence.source.url}}
+            <br />
+            <strong>Artikel:</strong>
+            {{sentence.sourceArticleHeader}}
+            <br />
+            <strong>Länk: </strong>
+            <a class="blue-link" :href="sentence.sourceArticleUrl">{{sentence.sourceArticleUrl}}</a>
+            <br />
+            <strong>Mening:</strong>
+            {{sentence.text}}
+            <br />
+          </p>
+        </div>
+        <div v-else>
+          <p v-for="(sentence, index) in negativeSentences" :key="index">
+            <strong>Datum:</strong>
+            {{sentence.received}}
+            <br />
+            <br />
+            <strong>Källa:</strong>
+            {{sentence.source.url}}
+            <br />
+            <strong>Artikel:</strong>
+            {{sentence.sourceArticleHeader}}
+            <br />
+            <strong>Länk: </strong>
+            <a class="blue-link" :href="sentence.sourceArticleUrl">{{sentence.sourceArticleUrl}}</a>
+            <br />
+            <strong>Mening:</strong>
+            {{sentence.text}}
+            <br />
+          </p>
+        </div>
+      </div>
+      <span class="float-right">
+        <span class="viewModeLinkButton" v-on:click="changeViewMode('Chart')">diagram</span> |
+        <span class="viewModeLinkButton" v-on:click="changeViewMode('Text')">text</span>
+      </span>
     </div>
   </div>
 </template>
@@ -55,10 +111,17 @@ export default {
       yearMonths: [],
       currentKeyword: "",
       currentYearMonth: "",
-      currentSentiment: "Negativt"
+      currentSentiment: "Negativt",
+      viewMode: "Chart",
+      positiveSentences: [],
+      negativeSentences: []
     };
   },
   methods: {
+    changeViewMode: function(mode) {
+      this.viewMode = mode;
+      this.getSentences();
+    },
     selectKeyword: function(event) {
       this.currentKeyword = event.target.innerHTML;
       this.getSentences();
@@ -120,32 +183,33 @@ export default {
     },
     visualize: async function(sentences) {
       let positiveMap = new Map();
-      let positiveSentences = [];
+      this.positiveSentences = [];
       let negativeMap = new Map();
-      let negativeSentences = [];
+      this.negativeSentences = [];
 
       sentences.forEach(s => {
         if (s.positive === true) {
           this.addToMap(positiveMap, s);
-          positiveSentences.push(s);
+          this.positiveSentences.push(s);
         } else {
           this.addToMap(negativeMap, s);
-          negativeSentences.push(s);
+          this.negativeSentences.push(s);
         }
       });
-
-      if (this.currentSentiment === "Positivt") {
-        const positiveSet = {
-          labels: [...positiveMap.keys()],
-          datapoints: [...positiveMap.values()]
-        };
-        renderBarChart(positiveSet);
-      } else {
-        const negativeSet = {
-          labels: [...negativeMap.keys()],
-          datapoints: [...negativeMap.values()]
-        };
-        renderBarChart(negativeSet);
+      if (this.viewMode === "Chart") {
+        if (this.currentSentiment === "Positivt") {
+          const positiveSet = {
+            labels: [...positiveMap.keys()],
+            datapoints: [...positiveMap.values()]
+          };
+          renderBarChart(positiveSet);
+        } else {
+          const negativeSet = {
+            labels: [...negativeMap.keys()],
+            datapoints: [...negativeMap.values()]
+          };
+          renderBarChart(negativeSet);
+        }
       }
     }
   },
@@ -159,18 +223,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
 </style>

@@ -41,7 +41,7 @@ namespace visualizer.Server.Services
         {
             var channel = new Channel("storage:7878", ChannelCredentials.Insecure);
             var client = new Storage.StorageClient(channel);
-
+            
             var result = await client.GetSentencesAsync(new GetSentencesRequest { Keyword = keyword, YearMonth = Timestamp.FromDateTime(yearMonth.ToUniversalTime()) });
             await channel.ShutdownAsync();
             var yearMonths = new List<DateTime>();
