@@ -19,11 +19,6 @@ namespace visualizer2.Controllers
         public async Task<List<String>> AllKeywords()
         {
             var keywords = await _storageClient.GetAllKeywordsAsync();
-            foreach (var keyword in keywords)
-            {
-                Console.WriteLine(keyword);
-            }
-
             return keywords;
         }
 
@@ -35,7 +30,6 @@ namespace visualizer2.Controllers
             var yearMonthStrings = new List<string>();
             foreach (var yearMonth in yearMonths)
             {
-                Console.WriteLine(yearMonth.ToShortDateString());
                 var month = yearMonth.Month < 10 ? $"0{yearMonth.Month}" : yearMonth.Month.ToString();
                 yearMonthStrings.Add($"{yearMonth.Year}-{month}");
             }

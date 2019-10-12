@@ -38,7 +38,7 @@ services:
     env_file:
       - ./environment/storage.env
   visualizer:
-    build: ./visualizer
+    build: ./visualizer2
     depends_on:
     - storage
     ports:
