@@ -55,7 +55,7 @@
         <div v-if="currentSentiment == 'Positivt'">
           <p v-for="(sentence, index) in positiveSentences" :key="index">
             <strong>Datum:</strong>
-            {{sentence.received}}
+            {{sentence.received | moment('yyyy-mm-dd')}}
             <br />
             <strong>Källa:</strong>
             {{sentence.source.url}}
@@ -74,7 +74,7 @@
         <div v-else>
           <p v-for="(sentence, index) in negativeSentences" :key="index">
             <strong>Datum:</strong>
-            {{sentence.received}}
+            {{sentence.received | moment('YYYY-MM-DD')}}
             <br />
             <br />
             <strong>Källa:</strong>

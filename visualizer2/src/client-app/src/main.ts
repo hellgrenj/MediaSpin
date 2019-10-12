@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../public/css/site.css'
 
 Vue.config.productionTip = false;
+Vue.use(require('vue-moment'));
 
 new Vue({
   router,
