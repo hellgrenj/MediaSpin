@@ -34,7 +34,7 @@
       meningar {{currentYearMonth}}
     </h4>
     <h4 v-else>
-      {{currentKeyword}}
+      {{currentKeyword}} i
       <span style="color:#c56464">negativa</span>
       meningar {{currentYearMonth}}
     </h4>
@@ -64,7 +64,7 @@
             {{sentence.sourceArticleHeader}}
             <br />
             <strong>Länk:</strong>
-            <a class="source-article-link" :href="sentence.sourceArticleUrl">{{sentence.sourceArticleUrl}}</a>
+            <a class="source-article-link" :href="sentence.sourceArticleUrl">länk till artikeln</a>
             <br />
             <strong>Mening:</strong>
             {{sentence.text}}
@@ -83,7 +83,7 @@
             {{sentence.sourceArticleHeader}}
             <br />
             <strong>Länk:</strong>
-            <a class="source-article-link" :href="sentence.sourceArticleUrl">{{sentence.sourceArticleUrl}}</a>
+            <a class="source-article-link" :href="sentence.sourceArticleUrl">länk till artikeln</a>
             <br />
             <strong>Mening:</strong>
             {{sentence.text}}
