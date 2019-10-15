@@ -29,7 +29,7 @@
       </div>
     </div>
     <h4 v-if="currentSentiment == 'Positivt'">
-      {{currentKeyword}}
+      {{currentKeyword}} i
       <span style="color:#64c570">positiva</span>
       meningar {{currentYearMonth}}
     </h4>
