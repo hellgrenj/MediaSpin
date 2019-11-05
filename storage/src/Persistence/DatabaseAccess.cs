@@ -73,7 +73,10 @@ namespace storage.Persistence
                 s.SourceArticleHeader == sentence.SourceArticleHeader &&
                 s.SourceArticleUrl == sentence.SourceArticleUrl &&
                 s.Received.Date == sentence.Received.Date).SingleOrDefaultAsync();
-
+    
+            
+            
+    
             if (existing == null)
             {
                 _storageDbContext.Sentences.Add(sentence);
