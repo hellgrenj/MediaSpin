@@ -18,7 +18,7 @@ namespace storage.Domain.Services
         }
         public async Task<List<Keyword>> GetAsync()
         {
-            _logger.LogInformation("fetching all keywords baby!");
+            _logger.LogInformation("fetching all keywords baby baby!!");
             return await _databaseAccess.GetAllKeywordsAsync();
         }
 
