@@ -5,6 +5,7 @@
   "main": "add-to-dataset-and-re-train-model.js",
   "dependencies": {
     "chalk": "^2.4.2",
+    "dotenv": "^8.2.0",
     "figlet": "^1.2.3",
     "shelljs": "^0.8.3"
   },
