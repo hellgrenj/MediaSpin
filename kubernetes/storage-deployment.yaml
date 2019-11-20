@@ -50,7 +50,7 @@ spec:
             secretKeyRef:
               key: rabbituser
               name: rabbituser
-        image: hellgrenj/mediaspin:storagev16
+        image: hellgrenj/mediaspin:storagev17
         name: storage
         ports:
         - containerPort: 7878
