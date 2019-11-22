@@ -1,10 +1,5 @@
 # MediaSpin
 
-## Up and running at
-[mediaspin.johanhellgren.se](https://mediaspin.johanhellgren.se)  
-
-![screenshot](./screenshot.png)
-
 ## Prerequisites
 
 You need to have the following tech installed locally:
