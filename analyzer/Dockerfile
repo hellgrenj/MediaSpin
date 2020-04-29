@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0.100-preview5-buster AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app/src
 
 # copy csproj and restore as distinct layers
@@ -10,7 +10,7 @@ COPY ./src/ .
 RUN dotnet publish -c Release -o out
 
 # build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0.0-preview5-buster-slim
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build-env /app/src/out ./
 COPY --from=build-env /app/src/MLModel ./MLModel

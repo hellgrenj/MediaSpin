@@ -30,15 +30,15 @@ namespace analyzer
 
             // Setup DI
             var services = new ServiceCollection();
-            services.AddLogging();            
-            services.AddNodeServices(options => { });
+            services.AddLogging(c => c.AddSerilog());            
+            services.AddNodeServices(options => { }); // TODO remove and just use the ML Model!
             services.AddSingleton<IRabbitEndpoint, RabbitEndpoint>();
             services.AddSingleton<IPipeline, RabbitClient>();
             services.AddSingleton<IEngine, Engine>();
             services.AddSingleton<IMediator, Mediator>();
             services.AddSingleton<IMLModel, MLModel>();
             services.AddSingleton<IAFINN, AFINN>();
-            services.AddSingleton<ILoggerFactory>(s => new SerilogLoggerFactory(Log.Logger, false));
+            
 
             
             var serviceProvider = services.BuildServiceProvider();

@@ -42,7 +42,7 @@ namespace src.Infrastructure
             consumer.Received += (model, ea) =>
             {
                 var body = ea.Body;
-                var json = Encoding.UTF8.GetString(body);
+                var json = Encoding.UTF8.GetString(body); 
 
                 try
                 {
