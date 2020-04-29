@@ -29,11 +29,10 @@ namespace tracker
 
             // Setup DI
             var services = new ServiceCollection();
-            services.AddLogging();
-            services.AddNodeServices(options => { });
+            services.AddLogging(c => c.AddSerilog());
+            services.AddNodeServices(options => { }); // replace with Node-grpc microservice (grpc med polly?)
             services.AddSingleton<IPipeline, RabbitClient>();
             services.AddSingleton<IArticlesFileWriter, ArticlesFileWriter>();
-            services.AddSingleton<ILoggerFactory>(s => new SerilogLoggerFactory(Log.Logger, false));
             services.AddSingleton<ISpider, Spider>();
             services.AddSingleton<IValidator, Validator>();
             services.AddSingleton<IExtractor, Extractor>();
