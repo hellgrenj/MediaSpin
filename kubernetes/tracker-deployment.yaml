@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
@@ -9,6 +9,9 @@ metadata:
     io.kompose.service: tracker
   name: tracker
 spec:
+  selector:
+    matchLabels:
+      io.kompose.service: tracker
   replicas: 1
   strategy:
     type: Recreate
@@ -40,9 +43,13 @@ spec:
             configMapKeyRef:
               key: SOURCES
               name: tracker-environment-tracker-env
-        image: hellgrenj/mediaspin:trackerv14
+        image: hellgrenj/projects:mediaspin-trackerv30
         name: tracker
-        resources: {}
+        resources: 
+          limits:
+            cpu: 700m
+          requests:
+            cpu: 200m
         volumeMounts:
         - mountPath: /logs
           name: logs

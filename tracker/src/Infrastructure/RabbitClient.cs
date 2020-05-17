@@ -27,7 +27,7 @@ namespace tracker.Infrastructure
             channel.BasicPublish("", "analytics_queue", properties, body);
 
         }
-        public void Open()
+        public void Open(Action done)
         {
             var rabbitPassword = Environment.GetEnvironmentVariable("RABBITMQ_DEFAULT_PASS");
             _logger.LogInformation("connecting to rabbitmq");
@@ -37,6 +37,7 @@ namespace tracker.Infrastructure
             connection = TryOpenConnection(connection, factory);
             channel = connection.CreateModel();
             _logger.LogInformation("connected to rabbitmq");
+            done();
         }
         private IConnection TryOpenConnection(IConnection connection, ConnectionFactory factory, int attempt = 0)
         {

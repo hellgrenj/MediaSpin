@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
@@ -9,6 +9,9 @@ metadata:
     io.kompose.service: analyzer
   name: analyzer
 spec:
+  selector:
+    matchLabels:
+      io.kompose.service: analyzer
   replicas: 1
   strategy:
     type: Recreate
@@ -30,7 +33,7 @@ spec:
             secretKeyRef:
               key: rabbituser
               name: rabbituser
-        image: hellgrenj/mediaspin:analyzerv17
+        image: hellgrenj/projects:mediaspin-analyzerv20
         name: analyzer
         resources: {}
         volumeMounts:
