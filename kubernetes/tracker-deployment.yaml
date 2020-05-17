@@ -46,10 +46,7 @@ spec:
         image: hellgrenj/projects:mediaspin-trackerv30
         name: tracker
         resources: 
-          limits:
-            cpu: 700m
-          requests:
-            cpu: 200m
+          limits: {}
         volumeMounts:
         - mountPath: /logs
           name: logs
