@@ -4,8 +4,8 @@
 
 You need to have the following tech installed locally:
 
-* dotnet core 3.0.x. 
-* node 10.x. 
+* dotnet core 3.1 (LTS)
+* node 12.16 (LTS)
 * docker version 18.x. 
 * docker-compose version 1.23.x. 
 
