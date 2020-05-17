@@ -9,7 +9,7 @@
       >olika partier</span>?
     </h3>
     <p>
-      MediaSpin är ett hobbyprojekt som jag sporadiskt knackar på under lediga halvtimmar. Idén är att, mha sentimentanalys, följa hur media
+      MediaSpin är ett hobbyprojekt som jag arbetar med på lediga stunder. Idén är att, mha sentimentanalys, följa hur media
       väljer att rapportera om olika ämnen över tid. Tjänsten fungerar genom att dagligen leta igenom nättidningar efter vissa nyckelord
       samt utföra sentimentanalys på identifierade meningar. Resultatet av denna analys sammanställs och visas på denna enkla webbplats.
       Idag så täcker tjänsten in följande svenska tidningar:
