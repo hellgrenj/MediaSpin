@@ -61,7 +61,7 @@ namespace trainer
 
             // TRY IT: Make a single test prediction loding the model from .ZIP file
             SentimentIssue sampleStatement = new SentimentIssue { Text = "Centerpartiet lockar fler väljare och förväntas bli större än Kalle Anka partiet till hösten" };
-            SentimentIssue sampleStatement2 = new SentimentIssue { Text = "Det går dåligt för Moderaterna, man rasar i den senaste opinionsmätningen" };
+            SentimentIssue sampleStatement2 = new SentimentIssue { Text = "Och Kristdemokraterna agerar nästan ännu mer obegripligt" };
 
             #region consume
             // Create prediction engine related to the loaded trained model

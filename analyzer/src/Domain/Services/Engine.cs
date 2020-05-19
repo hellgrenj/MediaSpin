@@ -60,9 +60,9 @@ namespace src.Domain.Services
         private bool HasNegativeSentiment(string sentence, PredictionResult result, AFINNPrediction secondOpinion)
         {
 
-            if (Convert.ToBoolean(result.SentimentPrediction.Prediction) && result.SentimentPrediction.Probability > 0.87)
+            if (Convert.ToBoolean(result.SentimentPrediction.Prediction) && result.SentimentPrediction.Probability > 0.93)
             {
-                if (secondOpinion.Score < -1)
+                if (secondOpinion.Score < -2)
                 {
                     return true; // both predictors agree on negative sentiment 
                 }
@@ -79,9 +79,9 @@ namespace src.Domain.Services
         }
         private bool HasPositiveSentiment(string sentence, PredictionResult result, dynamic secondOpinion)
         {
-            if (!Convert.ToBoolean(result.SentimentPrediction.Prediction) && result.SentimentPrediction.Probability < 0.10)
+            if (!Convert.ToBoolean(result.SentimentPrediction.Prediction) && result.SentimentPrediction.Probability < 0.08)
             {
-                if (secondOpinion.Score > 1)
+                if (secondOpinion.Score > 2)
                 {
                     return true; // both predictors agree on positive sentiment 
                 }
