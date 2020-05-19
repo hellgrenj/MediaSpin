@@ -62,7 +62,7 @@ namespace src.Domain.Services
 
             if (Convert.ToBoolean(result.SentimentPrediction.Prediction) && result.SentimentPrediction.Probability > 0.93)
             {
-                if (secondOpinion.Score < -2)
+                if (secondOpinion.Score < -1)
                 {
                     return true; // both predictors agree on negative sentiment 
                 }
@@ -81,7 +81,7 @@ namespace src.Domain.Services
         {
             if (!Convert.ToBoolean(result.SentimentPrediction.Prediction) && result.SentimentPrediction.Probability < 0.08)
             {
-                if (secondOpinion.Score > 2)
+                if (secondOpinion.Score > 1)
                 {
                     return true; // both predictors agree on positive sentiment 
                 }
