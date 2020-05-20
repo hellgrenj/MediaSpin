@@ -31,7 +31,7 @@ function log (loggedLevel, instance, msg) {
   if (logLevelActive(loggedLevel)) {
     const logMsg = `${moment().format('l, h:mm:ss A')} ${loggedLevel.toUpperCase()} > ${instance.caller}: ${msg}`
     console.log(logMsg)
-    fs.createWriteStream(`${dir}/smsservice-${moment().format('YYYYMMDD')}.log`, { flags: 'a' }).write(logMsg + '\n')
+    fs.createWriteStream(`${dir}/bot-${moment().format('YYYYMMDD')}.log`, { flags: 'a' }).write(logMsg + '\n')
   }
 }
 
