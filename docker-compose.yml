@@ -17,6 +17,12 @@ services:
       - ./environment/analyzer.env
     volumes:
     - logs:/logs
+  bot:
+    build: ./bot
+    env_file:
+      - ./environment/bot.env
+    volumes:
+    - logs:/logs
   rabbit:
     image: rabbitmq:3-management
     env_file:
