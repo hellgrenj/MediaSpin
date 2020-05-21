@@ -25,6 +25,8 @@ spec:
       - env:
         - name: LOG_LEVEL
           value: 'info'
+        - name: TWITTER_BOT_ENABLED
+          value: 'true'
         - name: RABBITMQ_DEFAULT_PASS
           valueFrom:
             secretKeyRef:
@@ -35,7 +37,27 @@ spec:
             secretKeyRef:
               key: rabbituser
               name: rabbituser
-        image: hellgrenj/projects:mediaspin-botv1
+        - name: TWITTER_CONSUMER_KEY
+          valueFrom:
+            secretKeyRef:
+              key: twitterconsumerkey
+              name: twitterconsumerkey
+        - name: TWITTER_CONSUMER_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: twitterconsumersecret
+              name: twitterconsumersecret
+        - name: TWITTER_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: twitteraccesstoken
+              name: twitteraccesstoken
+        - name: TWITTER_ACCESS_TOKEN_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: twitteraccesstokensecret
+              name: twitteraccesstokensecret
+        image: hellgrenj/projects:mediaspin-botv3
         name: bot
         resources: 
           limits: {}
