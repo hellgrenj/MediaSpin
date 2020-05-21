@@ -5,7 +5,8 @@
   "main": "bot.js",
   "dependencies": {
     "amqplib": "^0.5.6",
-    "moment": "^2.26.0"
+    "moment": "^2.26.0",
+    "twit": "^2.2.11"
   },
   "devDependencies": {},
   "scripts": {

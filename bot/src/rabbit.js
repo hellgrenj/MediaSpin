@@ -32,7 +32,7 @@ function tryConnect (resolve, attempt = 0) {
     resolve()
   })
 }
-rabbit.listen = function () {
+rabbit.listen = function (handle) {
   rabbit.conn.createChannel((err, ch) => {
     if (err) throw err
     
@@ -45,6 +45,7 @@ rabbit.listen = function () {
         q.queue,
         function (msg) {
          logger.info(`received msg ${JSON.stringify(msg.content.toString())}`)
+         handle(JSON.parse(msg.content.toString()))
         }, {
           noAck: false
         }
