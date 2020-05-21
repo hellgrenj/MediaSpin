@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using src.Domain.Ports.Outbound;
 using storage.Domain.Models;
 using storage.Domain.Ports.Outbound;
 
@@ -10,10 +11,14 @@ namespace storage.Domain.Services
     {
         private readonly ILogger<StoreAnalyzedSentenceService> _logger;
         private readonly IDatabaseAccess _databaseAccess;
-        public StoreAnalyzedSentenceService(IDatabaseAccess databaseAccess, ILogger<StoreAnalyzedSentenceService> logger)
+
+        private readonly IPipeline _pipeline;
+        public StoreAnalyzedSentenceService(IDatabaseAccess databaseAccess, ILogger<StoreAnalyzedSentenceService> logger,
+        IPipeline pipeline)
         {
             _databaseAccess = databaseAccess;
             _logger = logger;
+            _pipeline = pipeline;
         }
         public async Task StoreAsync(AnalyzedSentence analyzedSentence)
         {
@@ -34,6 +39,7 @@ namespace storage.Domain.Services
                 Received = DateTime.Now
             };
             await _databaseAccess.SaveSentenceAsync(sentence);
+            _pipeline.SendToBot(analyzedSentence);
         }
     }
 }

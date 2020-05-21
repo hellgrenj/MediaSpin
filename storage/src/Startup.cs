@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using src.Domain.Ports.Outbound;
+using src.Infrastructure;
 using storage.Domain.Ports.Inbound;
 using storage.Domain.Ports.Outbound;
 using storage.Domain.Services;
@@ -23,6 +25,7 @@ namespace storage
             services.AddTransient<IDatabaseAccess, DatabaseAccess>();
             services.AddTransient<IStoreAnalyzedSentenceService, StoreAnalyzedSentenceService>();
             services.AddTransient<IGetKeywordsService, GetKeywordsService>();
+            services.AddSingleton<IPipeline, RabbitClient>();
             services.AddTransient<IGetYearMonthsService, GetYearMonthsService>();
             services.AddTransient<IGetSentencesService, GetSentencesService>();
 
@@ -34,7 +37,7 @@ namespace storage
             services.AddDbContext<StorageDbContext>(options => options.UseNpgsql(sqlConnectionString));
             // rabbit
             services.AddHostedService<RabbitEndpoint>();
-
+            
         }
         private static void UpdateDatabase(IApplicationBuilder app)
         {
@@ -49,7 +52,8 @@ namespace storage
             }
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Microsoft.Extensions.Hosting.IHostApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Microsoft.Extensions.Hosting.IHostApplicationLifetime lifetime,
+        IPipeline pipeline)
         {
             if (env.IsDevelopment())
             {
@@ -61,6 +65,7 @@ namespace storage
                 endpoints.MapGrpcService<StorageService>();
             });
             UpdateDatabase(app);
+            pipeline.Open();
         }
     }
 }
