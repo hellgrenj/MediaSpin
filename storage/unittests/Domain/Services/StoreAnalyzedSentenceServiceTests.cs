@@ -17,7 +17,7 @@ namespace unittests.Domain.Services
             
             mockedDatabaseAccess.Setup(db => db.EnsureExistAsync(It.IsAny<Source>())).ReturnsAsync(0);
             mockedDatabaseAccess.Setup(db => db.EnsureExistAsync(It.IsAny<Keyword>())).ReturnsAsync(0);
-            mockedDatabaseAccess.Setup(db => db.SaveSentenceAsync(It.IsAny<Sentence>())).ReturnsAsync(0);
+            mockedDatabaseAccess.Setup(db => db.SaveSentenceAsync(It.IsAny<Sentence>())).ReturnsAsync((sentenceId: 0, saved: true));
 
             var service = new StoreAnalyzedSentenceService(mockedDatabaseAccess.Object, mockedLogger.Object);
             var sentence = new AnalyzedSentence();

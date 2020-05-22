@@ -12,7 +12,7 @@ namespace storage.Domain.Ports.Outbound
     {
         Task<int> EnsureExistAsync(Source source);
         Task<int> EnsureExistAsync(Keyword keyword);
-        Task<int> SaveSentenceAsync(Sentence sentence);
+        Task<(int sentenceId, bool saved)> SaveSentenceAsync(Sentence sentence);
         Task<List<Keyword>> GetAllKeywordsAsync();
         Task<List<DateTime>> GetAllYearMonthsAsync();
         Task<List<Sentence>> GetSentencesAsync(GetSentencesQuery query);

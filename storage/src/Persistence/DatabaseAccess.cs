@@ -54,7 +54,7 @@ namespace storage.Persistence
                 return existing.KeywordId;
             }
         }
-        public async Task<int> SaveSentenceAsync(Sentence sentence)
+        public async Task<(int sentenceId, bool saved)> SaveSentenceAsync(Sentence sentence)
         {
             /* <Johan Thinks> 
             storage is a worker on a queue and only works with
@@ -82,12 +82,12 @@ namespace storage.Persistence
                 _storageDbContext.Sentences.Add(sentence);
                 await _storageDbContext.SaveChangesAsync();
                 _logger.LogInformation($"stored the sentence {sentence.Text}");
-                return sentence.SentenceId;
+                return (sentenceId: sentence.SentenceId, saved: true);
             }
             else
             {
                 _logger.LogInformation($"sentence {sentence.Text} already exist for the same keyword, source, article and day");
-                return existing.SentenceId;
+                return (sentenceId: existing.SentenceId, saved: false);
             }
 
         }

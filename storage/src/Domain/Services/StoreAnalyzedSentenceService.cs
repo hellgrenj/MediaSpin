@@ -38,8 +38,12 @@ namespace storage.Domain.Services
                 SourceArticleUrl = analyzedSentence.ArticleUrl,
                 Received = DateTime.Now
             };
-            await _databaseAccess.SaveSentenceAsync(sentence);
-            _pipeline.SendToBot(analyzedSentence);
+            var result = await _databaseAccess.SaveSentenceAsync(sentence);
+            if (result.saved)
+            {
+                _pipeline.SendToBot(analyzedSentence);
+            }
+
         }
     }
 }
