@@ -30,12 +30,11 @@ First run the system and let tracker execute a full article fetch. Make sure tha
 The idea is to track how Swedish media reports on different subjects by using sentiment analysis.
 This hobby project scratches two itches at once for me;  
 1) I find the idea interesting  
-2) I use this solution to learn and evaluate different things ... (hence the overengineering and complex architecture)
+2) I use this solution to learn, try and evaluate different *things* ... (hence the overengineering,
+ complex architecture and different versions of a single component)
 
 
-## How does it work?
-
-### simplified overview - its a pipeline
+## Conceptual overview
              tracker (tracks and extracts articles containing keywords)  
                 |
                 |
