@@ -36,15 +36,17 @@ This hobby project scratches two itches at once for me;
 ## How does it work?
 
 ### simplified overview - its a pipeline
+             tracker (tracks and extracts articles containing keywords)  
+                |
+                |
+             analyzer (analyzes sentiment)
+                |
+                |
+             storage (stores analysis)
+            /       \          
+           /         \
+      visualizer     bot
 
-**tracker** (tracks and extracts articles containing keywords) =>  
-**analyzer** (analyzes sentiment) =>  
-**storage** (stores analysis) =>  
-**visualizer** (visualizes analysis)
-
-### whiteboard version
-
-![screenshot](./overview-drawing.jpg)
 
 
 ## Tech and other stuff in this project
@@ -54,7 +56,7 @@ This hobby project scratches two itches at once for me;
 * ML.NET
 * Sentiment (AFINN-based sentiment analysis for Node.js)
 * gRPC
-* NodeServices in .net core
+* NodeServices in .net core (soon to be replaced...)
 * Ef core
 * Postgres
 * RabbitMQ
