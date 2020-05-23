@@ -27,7 +27,11 @@ First run the system and let tracker execute a full article fetch. Make sure tha
  (more about the dataset under Challanges below)
 
 ## What and why
-The idea is to track how Swedish media reports on different subjects by using sentiment analysis. The reason for doing this, besides that I find the idea interesting, is that I had an itch to build something after a couple of months on parental leave. So if you find this solution just a tad over engineered its because I wanted to learn and evaluate some new things as well as revisit some old ideas - and where should you do that if not in a hobby project? =)
+The idea is to track how Swedish media reports on different subjects by using sentiment analysis.
+This hobby project scratches two itches at once for me;  
+1) I find the idea interesting  
+2) I use this solution to learn and evaluate different things ... (hence the overengineering and complex architecture)
+
 
 ## How does it work?
 
