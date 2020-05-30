@@ -24,7 +24,7 @@ spec:
       containers:
       - env:
         - name: LOG_LEVEL
-          value: 'info'
+          value: info
         - name: TWITTER_BOT_ENABLED
           value: 'true'
         - name: RABBITMQ_DEFAULT_PASS
@@ -57,7 +57,7 @@ spec:
             secretKeyRef:
               key: twitteraccesstokensecret
               name: twitteraccesstokensecret
-        image: hellgrenj/projects:mediaspin-botv3
+        image: hellgrenj/projects:mediaspin-botv6
         name: bot
         resources: 
           limits: {}

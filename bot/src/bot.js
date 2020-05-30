@@ -19,7 +19,7 @@ async function start () {
 }
 start()
 
-function handle (msg) {
+function handle (msg, ack) {
   const tweet = buildTweet(msg)
   if (process.env.TWITTER_BOT_ENABLED === 'true') {
     T.post('statuses/update', { status: tweet }, function (
@@ -30,23 +30,28 @@ function handle (msg) {
       console.log(data)
     })
   } else {
-    logger.info(`bot disabled, this is the tweet that would have been published ${tweet}`)
+    logger.info(
+      `bot disabled, this is the tweet that would have been published ${tweet}`
+    )
   }
+  ack()
 }
 function buildTweet (msg) {
   const charLimit = 280
   const firstOption = `Jag hittade en ${
     msg.Positive ? 'positiv' : 'negativ'
-  } mening innehållande nyckelordet ${msg.Keyword} i artikeln ${msg.ArticleUrl} 
-  "${msg.Sentence}"`
+  } mening innehållande nyckelordet #${msg.Keyword.trim()} i artikeln ${
+    msg.ArticleUrl
+  } 
+  "${msg.Sentence.trim()}"`
   const secondOption = `${
     msg.Positive ? 'Positiv' : 'Negativ'
-  } mening (nyckelord: ${msg.Keyword}, källa: ${msg.ArticleUrl}) 
-  "${msg.Sentence}"`
+  } mening (nyckelord: #${msg.Keyword.trim()}, källa: ${msg.ArticleUrl}) 
+  "${msg.Sentence.trim()}"`
 
   const thirdOption = `Jag hittade en ${
     msg.Positive ? 'positiv' : 'negativ'
-  } mening innehållande nyckelordet ${msg.Keyword} i artikeln ${
+  } mening innehållande nyckelordet #${msg.Keyword.trim()} i artikeln ${
     msg.ArticleUrl
   }. Mer info på https://mediaspin.johanhellgren.se.`
 

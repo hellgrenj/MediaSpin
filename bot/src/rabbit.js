@@ -35,22 +35,31 @@ function tryConnect (resolve, attempt = 0) {
 rabbit.listen = function (handle) {
   rabbit.conn.createChannel((err, ch) => {
     if (err) throw err
-    
-    ch.assertQueue(`bot_queue`, {
-      durable: true
-    }, function (err, q) {
-      if (err) throw err
-      logger.info(`Waiting for messages in ${q.queue}`)
-      ch.consume(
-        q.queue,
-        function (msg) {
-         logger.info(`received msg ${JSON.stringify(msg.content.toString())}`)
-         handle(JSON.parse(msg.content.toString()))
-        }, {
-          noAck: false
-        }
-      )
-    })
+
+    ch.assertQueue(
+      `bot_queue`,
+      {
+        durable: true
+      },
+      function (err, q) {
+        if (err) throw err
+        logger.info(`Waiting for messages in ${q.queue}`)
+        ch.consume(
+          q.queue,
+          function (msg) {
+            logger.info(
+              `received msg ${JSON.stringify(msg.content.toString())}`
+            )
+            handle(JSON.parse(msg.content.toString()), () => {
+              ch.ack(msg)
+            })
+          },
+          {
+            noAck: false
+          }
+        )
+      }
+    )
   })
 }
 module.exports = rabbit
