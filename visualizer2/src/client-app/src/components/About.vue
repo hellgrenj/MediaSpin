@@ -12,7 +12,9 @@
       MediaSpin är ett hobbyprojekt som jag arbetar med på lediga stunder. Idén är att, mha sentimentanalys, följa hur media
       väljer att rapportera om olika ämnen över tid. Tjänsten fungerar genom att dagligen leta igenom nättidningar efter vissa nyckelord
       samt utföra sentimentanalys på identifierade meningar. Resultatet av denna analys sammanställs och visas på denna enkla webbplats.
-      Systemet har även sin egen twitter-bot som du kan följa på <a class="blue-link" href="https://twitter.com/MediaSpin2">https://twitter.com/MediaSpin2</a><br/>
+      Systemet har även sin egen twitter-bot som du kan följa på <a class="blue-link" href="https://twitter.com/MediaSpin2">https://twitter.com/MediaSpin2</a>
+    </p>
+    <p>
       Idag så täcker tjänsten in följande svenska tidningar:
     </p>
     <ul>
